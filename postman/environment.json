@@ -1,0 +1,12 @@
+{
+    "id": "e98e27f0-155e-4b68-80dc-324395e80838",
+    "name": "Local Environment",
+    "values": [
+        {
+            "key": "baseUrl",
+            "value": "http://ppf-backend:4000",
+            "enabled": true
+        }
+    ],
+    "_postman_variable_scope": "environment"
+}

@@ -1,0 +1,73 @@
+name: ppf
+
+services:
+  # ── MySQL 8.0 ──────────────────────────────────────────────────────────────
+  mysql:
+    image: mysql:8.0
+    container_name: ppf-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: ${DB_NAME:-ppf_db}
+      MYSQL_USER: ${DB_USER:-ppf_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-ppf_password}
+    ports:
+      - "${MYSQL_PORT:-3307}:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-rootpassword}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - ppf-net
+
+  # ── Backend (Node.js + Express) ───────────────────────────────────────────
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ppf-backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      DB_HOST: ppf-mysql
+      DB_PORT: 3306
+      DB_NAME: ${DB_NAME:-ppf_db}
+      DB_USER: ${DB_USER:-ppf_user}
+      DB_PASSWORD: ${DB_PASSWORD:-ppf_password}
+      CORS_ORIGIN: http://localhost:${FRONTEND_PORT:-3000}
+      RATE_LIMIT_WINDOW_MS: ${RATE_LIMIT_WINDOW_MS:-900000}
+      RATE_LIMIT_MAX: ${RATE_LIMIT_MAX:-100}
+    ports:
+      - "${BACKEND_PORT:-4000}:4000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - ppf-net
+
+  # ── Frontend (React + nginx) ──────────────────────────────────────────────
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    container_name: ppf-frontend
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    depends_on:
+      - backend
+    networks:
+      - ppf-net
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  ppf-net:
+    driver: bridge
