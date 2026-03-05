@@ -6,7 +6,8 @@ const vehicleCreateRules = [
     body('marca')
         .trim()
         .notEmpty().withMessage('La marca es requerida.')
-        .isLength({ max: 100 }).withMessage('La marca no puede superar 100 caracteres.'),
+        .isLength({ max: 100 }).withMessage('La marca no puede superar 100 caracteres.')
+        .matches(/^[a-zA-Z\s]+$/).withMessage('La marca solo puede contener letras y espacios, sin números ni caracteres especiales.'),
     body('modelo')
         .trim()
         .notEmpty().withMessage('El modelo es requerido.')

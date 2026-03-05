@@ -8,7 +8,8 @@ const entryCreateRules = [
     body('motorista')
         .trim()
         .notEmpty().withMessage('El motorista es requerido.')
-        .isLength({ max: 150 }).withMessage('El motorista no puede superar 150 caracteres.'),
+        .isLength({ max: 150 }).withMessage('El motorista no puede superar 150 caracteres.')
+        .matches(/^[a-zA-Z\s'\-]+$/).withMessage('El nombre del motorista solo puede contener letras, espacios, guiones y apóstrofes, sin números ni caracteres especiales.'),
     body('tipo')
         .isIn(['entrada', 'salida']).withMessage('El tipo debe ser "entrada" o "salida".'),
     body('fecha')
