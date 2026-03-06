@@ -10,11 +10,25 @@ let pool = null;
 
 /**
  * Creates the MySQL connection pool (singleton).
+ * Includes security configurations to prevent connection-based attacks.
  * @returns {mysql.Pool}
  */
 function getPool() {
     if (!pool) {
-        pool = mysql.createPool(config.db);
+        pool = mysql.createPool({
+            ...config.db,
+            // Security enhancements
+            connectTimeout: 60000,      // 60s timeout for establishing connection
+            idleTimeout: 600000,        // 10 min idle timeout before releasing
+            // Prevent multiple statements in single query (SQL injection protection)
+            multipleStatements: false,
+            // Use timezone UTC to prevent timezone-based attacks
+            timezone: 'Z',
+            // Pool-specific settings
+            waitForConnections: true,
+            connectionLimit: 10,
+            queueLimit: 0,
+        });
     }
     return pool;
 }

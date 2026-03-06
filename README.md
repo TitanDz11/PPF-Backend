@@ -76,7 +76,7 @@ FLUSH PRIVILEGES;
 
 5. **Las migraciones se ejecutan automáticamente** al iniciar la aplicación por primera vez.
 
-## ⚙️ Variables de Entorno
+## Variables de Entorno
 
 Crear un archivo `.env` en la raíz del proyecto con las siguientes variables:
 
@@ -115,7 +115,7 @@ RATE_LIMIT_MAX=1000            # Máximo de peticiones por ventana
 | `RATE_LIMIT_WINDOW_MS` | Ventana de tiempo en ms | `900000` | No |
 | `RATE_LIMIT_MAX` | Máximo de peticiones | `1000` | No |
 
-## 🗄️ Base de Datos
+## Base de Datos
 
 ### Esquema
 
@@ -153,7 +153,7 @@ Las migraciones se ejecutan **automáticamente** al iniciar la aplicación. No e
 
 **Ubicación:** `src/db/migrations.js`
 
-## 🚀 Ejecución
+## Ejecución
 
 ### Modo Desarrollo (con auto-reinicio)
 ```bash
@@ -167,7 +167,7 @@ npm start
 
 El servidor estará disponible en: `http://localhost:4000`
 
-## 📡 Endpoints de la API
+## Endpoints de la API
 
 ### Base URL
 ```
@@ -176,7 +176,7 @@ http://localhost:4000/api
 
 ---
 
-### 🚗 Vehículos
+### Vehículos
 
 #### Obtener todos los vehículos
 ```http
@@ -307,7 +307,7 @@ DELETE /api/vehicles/:id
 
 ---
 
-### 📝 Entradas/Salidas
+### Entradas/Salidas
 
 #### Obtener todas las entradas/salidas
 ```http
@@ -411,7 +411,7 @@ DELETE /api/entries/:id
 
 ---
 
-## ❌ Códigos de Error
+## Códigos de Error
 
 ### Errores Comunes
 
@@ -454,7 +454,7 @@ DELETE /api/entries/:id
 
 ---
 
-## 🔒 Seguridad
+## Seguridad
 
 ### Rate Limiting
 - **Ventana:** 15 minutos (900,000 ms)
@@ -476,7 +476,7 @@ DELETE /api/entries/:id
 
 ---
 
-## 🐳 Docker
+## Docker
 
 ### Levantar solo MySQL
 ```bash
@@ -505,7 +505,7 @@ docker-compose logs -f
 
 ---
 
-## 🧪 Pruebas
+## Pruebas
 
 Las pruebas se pueden ejecutar con:
 ```bash
@@ -553,7 +553,7 @@ PPF-Backend/
 
 ---
 
-## 🚀 Despliegue
+## Despliegue
 
 ### Render.com
 
@@ -576,7 +576,7 @@ DB_NAME=ppf_db
 CORS_ORIGIN=https://tu-frontend.vercel.app
 ```
 
-## 🔧 Solución de Problemas
+## Solución de Problemas
 
 ### Error: "Cannot connect to database"
 

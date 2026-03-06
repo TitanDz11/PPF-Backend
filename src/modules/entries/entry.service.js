@@ -4,6 +4,7 @@ const { getPool } = require('../../db/connection');
 
 /**
  * Build a dynamic WHERE clause from optional query filters.
+ * Includes strict input validation and sanitization to prevent SQL injection.
  * @param {{ fecha?, vehicle_id?, motorista? }} filters
  * @returns {{ clause: string, values: any[] }}
  */
@@ -11,17 +12,33 @@ function buildFilters({ fecha, vehicle_id, motorista }) {
     const conditions = [];
     const values = [];
 
-    if (fecha) {
+    // Strict date format validation (YYYY-MM-DD)
+    if (fecha && /^\d{4}-\d{2}-\d{2}$/.test(fecha)) {
         conditions.push('e.fecha = ?');
         values.push(fecha);
     }
+    
+    // Ensure vehicle_id is numeric and positive
     if (vehicle_id) {
-        conditions.push('e.vehicle_id = ?');
-        values.push(Number(vehicle_id));
+        const parsedId = parseInt(vehicle_id, 10);
+        if (!isNaN(parsedId) && parsedId > 0) {
+            conditions.push('e.vehicle_id = ?');
+            values.push(parsedId);
+        }
     }
-    if (motorista) {
-        conditions.push('e.motorista LIKE ?');
-        values.push(`%${motorista}%`);
+    
+    // Sanitize motorista - remove SQL special characters and limit length
+    if (motorista && typeof motorista === 'string') {
+        // Remove potentially dangerous characters: quotes, semicolons, backslashes
+        const sanitized = motorista
+            .replace(/['";\\]/g, '')
+            .trim()
+            .substring(0, 150); // Enforce max length
+        
+        if (sanitized) {
+            conditions.push('e.motorista LIKE ?');
+            values.push(`%${sanitized}%`);
+        }
     }
 
     const clause = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
