@@ -8,8 +8,8 @@ const config = require('../config/env');
  * Configure CORS with strict origin validation.
  * Even in internal systems, we should validate origins.
  */
-const allowedOrigins = process.env.CORS_ORIGINS 
-    ? process.env.CORS_ORIGINS.split(',') 
+const allowedOrigins = process.env.CORS_ORIGIN 
+    ? process.env.CORS_ORIGIN.split(',') 
     : [config.cors.origin || 'http://localhost:3000'];
 
 const corsOptions = {
