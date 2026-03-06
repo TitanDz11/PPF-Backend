@@ -553,29 +553,6 @@ PPF-Backend/
 
 ---
 
-## Despliegue
-
-### Render.com
-
-1. Crear cuenta en [Render](https://render.com)
-2. Crear nuevo Web Service
-3. Conectar repositorio de GitHub
-4. Configurar variables de entorno
-5. Usar base de datos MySQL de Railway o PlanetScale
-6. Deploy automático
-
-**Variables de Entorno para Producción:**
-```env
-NODE_ENV=production
-PORT=4000
-DB_HOST=<host-de-tu-db>
-DB_PORT=3306
-DB_USER=<usuario>
-DB_PASSWORD=<contraseña>
-DB_NAME=ppf_db
-CORS_ORIGIN=https://tu-frontend.vercel.app
-```
-
 ## Solución de Problemas
 
 ### Error: "Cannot connect to database"

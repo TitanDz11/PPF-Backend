@@ -9,8 +9,10 @@
 const fs = require('fs');
 const path = require('path');
 
-// Ensure logs directory exists
-const logsDir = path.join(__dirname, '../../logs');
+// Use /tmp directory for production (Railway) compatibility
+const logsDir = process.env.NODE_ENV === 'production' 
+    ? '/tmp' 
+    : path.join(__dirname, '../../logs');
 if (!fs.existsSync(logsDir)) {
     fs.mkdirSync(logsDir, { recursive: true });
 }
